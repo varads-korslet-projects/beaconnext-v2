@@ -4,7 +4,7 @@
   "description": "Identification",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aryan Kumar",
@@ -17,6 +17,7 @@
     "express-jwt": "^8.4.1",
     "firebase-admin": "^11.10.1",
     "jsonwebtoken": "^9.0.1",
-    "mongoose": "^7.4.2"
+    "mongoose": "^7.4.2",
+    "nodemon": "^3.0.1"
   }
 }

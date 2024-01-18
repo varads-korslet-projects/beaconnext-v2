@@ -6,9 +6,11 @@ const router = express.Router()
 const {authCheck} = require("../middlewares/auth");
 
 //controller
-const {createOrUpdateStudent, currentStudent} = require('../controllers/student');
+const {currentStudent,createStudentAccounts, getAll, firstLogin, studentLogin} = require('../controllers/student');
 
-router.post("/create-or-update-student", authCheck, createOrUpdateStudent );
 router.post("/current-student", authCheck, currentStudent );
-
+router.post("/create-student-accounts",createStudentAccounts);
+router.post("/first-login", firstLogin);
+router.post("/student-login", studentLogin)
+router.get("/getAll",  getAll);
 module.exports = router; 

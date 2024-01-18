@@ -21,7 +21,7 @@ exports.authCheck = async (req, res, next) =>{
     if (!authHeader) {
         return res.status(401).json({ error: 'Unauthorized - Missing Authorization header' });
       }
-      jwt.verify(token, 'KORSLETRESTFULAPIs', (err, student) => {
+      jwt.verify(token, process.env.signingkey, (err, student) => {
         if (err) {
           return res.status(403).json({ error: 'Forbidden - Invalid token' });
        }

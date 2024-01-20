@@ -30,3 +30,23 @@ exports.authCheck = async (req, res, next) =>{
        next();
     });
 };
+
+exports.authCheckTeacher = async (req, res, next) =>{
+  const token = req.headers['authorization'];
+  if (!token) {
+      return res.status(401).json({ error: 'Unauthorized - Missing Authorization header' });
+    }
+    jwt.verify(token, process.env.signingkey, (err, teacher) => {
+      if (err) {
+        return res.status(403).json({ error: 'Forbidden - Invalid token' });
+     }
+     //teacher role remaining
+     if(teacher.role == "teacher"){
+      req.teacher = teacher;
+      next();
+     }else{
+      return res.status(403).json({ error: 'Forbidden - Unauthorized' });
+     }
+
+  });
+};

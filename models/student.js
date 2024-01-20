@@ -2,7 +2,10 @@ const mongoose = require('mongoose'),
 bcrypt = require('bcrypt')
 
 const studentSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true
+    },
     email: {
         type : String,
         unique:true,
@@ -15,6 +18,18 @@ const studentSchema = new mongoose.Schema({
         required: true,
         index : true,
     },
+    year:{
+        type: Number,
+        required: true,
+    },
+    division:{
+        type: String,
+         max: 2
+    },
+    // phoneNumber:{
+    //     type: Number,
+    //     required: true,
+    // },
     deviceId:{
         type : String,
         unique:true,
@@ -26,8 +41,4 @@ const studentSchema = new mongoose.Schema({
 {timestamps:true}
 );
 
-studentSchema.methods.comparePassword = function(password) {
-    return bcrypt.compareSync(password, this.hash_password);
-  };
-  
 module.exports = mongoose.model('Student', studentSchema)

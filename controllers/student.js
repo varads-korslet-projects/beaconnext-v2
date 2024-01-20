@@ -121,5 +121,6 @@ exports.currentStudent = async (req, res) => {
 }
 
 exports.getAll = async (req, res) => {
+    console.log("getAll");
     res.status(201).json({"hiii":"hello"});
 }

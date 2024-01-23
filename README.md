@@ -14,8 +14,6 @@ Returns JSON:
 ```
 {"hiii":"hello"}
 ```
-Certainly! Below is the GitHub Markdown (`README.md`) for your Student API documentation:
-
 
 # Student API Documentation
 
@@ -167,7 +165,46 @@ Example:
 - Status Code: `201 Created`
 - Body: JSON object containing a success message and a JWT token.
 
+
+
+# Lecture API Documentation
+
+## Create Lecture
+### Endpoint
+`POST /create-lecture`
+
+### Request Headers
+- `Authorization` (String): JWT token for teacher authentication.
+
+### Request Body
+- `subjectName` (String): Name of the subject.
+- `StartTime` (Date): Start time of the lecture.
+- `EndTime` (Date): End time of the lecture.
+- `year` (Number): Year of the lecture.
+- `division` (String): Division of the lecture.
+- `class` (Number): Class of the lecture.
+- `minimumTime` (Number): Minimum time required for attendance.
+
+Example:
+```json
+{
+  "subjectName": "Mathematics",
+  "StartTime": "2024-01-23T08:00:00Z",
+  "EndTime": "2024-01-23T09:30:00Z",
+  "year": 2,
+  "division": "B",
+  "class": 101,
+  "minimumTime": 60
+}
+```
+
+### Response
+- Status Code: `201 Created`
+- Body: JSON object containing details of the created lecture.
+
+
 ---
 
 **Note:** For endpoints requiring authentication, make sure to include the `Authorization` header with the JWT token obtained during login. Use appropriate error codes and messages for unsuccessful scenarios. Ensure that the environment variables like `passkeyStudent`, `passkeyTeacher` and `signingkey` are properly configured for security.
 
+---

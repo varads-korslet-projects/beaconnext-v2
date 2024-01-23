@@ -110,5 +110,64 @@ Example:
 
 ---
 
-**Note:** For endpoints requiring authentication, make sure to include the `Authorization` header with the JWT token obtained during login. Use appropriate error codes and messages for unsuccessful scenarios. Ensure that the environment variables like `passkeyStudent` and `signingkey` are properly configured for security.
+
+
+# Teacher API Documentation
+
+## Create Teacher Accounts
+### Endpoint
+`POST /create-teacher-accounts`
+
+### Request Headers
+- `passkey` (String): Passkey for authentication.
+
+### Request Body
+- `teachers` (Array): An array of teacher objects.
+
+Example:
+```json
+{
+  "teachers": [
+    {
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "hash_password": "hashed_password"
+    },
+    // Add more teachers as needed
+  ]
+}
 ```
+
+### Response
+- Status Code: `201 Created`
+- Body: JSON array containing details of the created teachers.
+
+## Teacher First Login
+### Endpoint
+`POST /first-teacher-login`
+
+### Request Body
+- `email` (String): Email of the teacher.
+- `oldPassword` (String): Old password for verification.
+- `newPassword` (String): New password to be set.
+
+### Response
+- Status Code: `201 Created`
+- Body: JSON object containing a success message and a JWT token.
+
+## Teacher Login
+### Endpoint
+`POST /teacher-login`
+
+### Request Body
+- `email` (String): Email of the teacher.
+- `password` (String): Password for authentication.
+
+### Response
+- Status Code: `201 Created`
+- Body: JSON object containing a success message and a JWT token.
+
+---
+
+**Note:** For endpoints requiring authentication, make sure to include the `Authorization` header with the JWT token obtained during login. Use appropriate error codes and messages for unsuccessful scenarios. Ensure that the environment variables like `passkeyStudent`, `passkeyTeacher` and `signingkey` are properly configured for security.
+

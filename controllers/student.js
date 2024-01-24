@@ -12,11 +12,11 @@ exports.createStudentAccounts = async(req,res) => {
             const result = await Student.insertMany(students);
             res.status(201).json(result);
         }else{
-            res.status(500).json({ error: 'Internal Server Error' });
+            res.status(500).json({ error: "Wrong passkey" });
         }
       } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error });
       }
 }
 exports.firstLogin = async (req,res)=>{
@@ -35,7 +35,7 @@ exports.firstLogin = async (req,res)=>{
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error', error });
+        res.status(500).json({ error: error });
     }
 }
 
@@ -60,7 +60,7 @@ exports.studentLogin = async (req,res)=>{
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error });
     }
 }
 
@@ -108,7 +108,7 @@ exports.countAttendance = async (req,res)=>{
 
     }catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error });
     }
 
 }

@@ -15,7 +15,7 @@ exports.createTeacherAccounts = async(req,res) => {
         }
       } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error });
       }
 }
 
@@ -36,7 +36,7 @@ exports.firstLogin = async (req,res)=>{
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error });
     }
 }
 
@@ -58,6 +58,6 @@ exports.teacherLogin = async (req,res)=>{
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: error });
     }
 }

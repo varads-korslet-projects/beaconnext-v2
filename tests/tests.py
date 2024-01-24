@@ -47,7 +47,7 @@ def test_create_student_accounts():
                 "year": 1,
                 "division": "A",
                 "deviceId": "abcd1234",
-                "hash_password": "hashed_password"
+                "hash_password": "old_password"
             },
             # Add more students as needed
         ]
@@ -57,7 +57,6 @@ def test_create_student_accounts():
 
 # Test student first login
 def test_student_first_login():
-    token = student_login(12345, "old_password", "abcd1234")
     url = f"{base_url}/first-student-login"
     data = {"moodleId": 12345, "oldPassword": "old_password", "newPassword": "new_password", "deviceId": "abcd1234"}
     headers = {"Authorization": f"Bearer {token}"}
@@ -66,7 +65,6 @@ def test_student_first_login():
 
 # Test student login
 def test_student_login():
-    token = student_login(12345, "new_password", "abcd1234")
     url = f"{base_url}/student-login"
     data = {"moodleId": 12345, "password": "new_password", "deviceId": "abcd1234"}
     headers = {"Authorization": f"Bearer {token}"}

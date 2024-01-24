@@ -137,3 +137,12 @@ exports.getAll = async (req, res) => {
         res.status(500).json({ error: error });
     }
 };
+
+exports.test = async (req, res) => {
+    try {
+        res.status(200).json({"online":"true"});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error });
+    }
+};

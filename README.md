@@ -4,9 +4,11 @@
 ```
 http://170.64.198.55:8000/api
 ```
-
-## Endpoints
-
+`GET /test`
+To test if server is reachable
+### Response
+- Status Code: `200 Ok`
+- Body: {"online":"true"}
 ---
 
 # Student API Documentation

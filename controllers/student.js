@@ -114,11 +114,15 @@ exports.countAttendance = async (req,res)=>{
 }
 
 exports.currentStudent = async (req, res) => {
-    Student.findOne({moodleId: req.student.moodleId}).exec((err, student)=>{
-        if (err) throw new Error(err);
+    try {
+        const student = await Student.findOne({ moodleId: req.student.moodleId }).exec();
         res.json(student);
-    });
-}
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
 
 exports.getAll = async (req, res) => {
     console.log("getAll");

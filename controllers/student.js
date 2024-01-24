@@ -28,14 +28,14 @@ exports.firstLogin = async (req,res)=>{
             hashed_password = bcrypt.hashSync(newPassword, 10);
             await Student.findOneAndUpdate({moodleId:moodleId}, {hash_password:hashed_password, deviceId: deviceId})
             const token = jwt.sign({ moodleId: student.moodleId, name: student.name, _id: student._id , role: "student"},  process.env.signingkey)
-            res.status(201).json({success: "Your password was changed successfully", token});
+            res.status(201).json({success: "Your password was changed successfully", token, deviceId});
         }
         else{
             res.status(401).json({error: "Wrong Id or Password"});
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error', error });
     }
 }
 

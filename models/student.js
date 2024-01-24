@@ -32,7 +32,7 @@ const studentSchema = new mongoose.Schema({
     // },
     deviceId:{
         type : String,
-        unique:true,
+        unique:false,
         default: 'notSet'
     },
     hash_password: {

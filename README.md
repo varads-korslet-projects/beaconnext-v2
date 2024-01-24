@@ -6,14 +6,6 @@ http://170.64.198.55:8000/api
 ```
 
 ## Endpoints
-/getall: Used for testing connectivity
-```
-api/getAll
-```
-Returns JSON:
-```
-{"hiii":"hello"}
-```
 
 ---
 
@@ -100,13 +92,13 @@ Example:
 - Status Code: `200 OK`
 - Body: JSON object containing details of the current student.
 
-## Get All Students (Sample Endpoint)
+## Get All Students 
 ### Endpoint
 `GET /getAll`
 
 ### Response
-- Status Code: `201 Created`
-- Body: JSON object with a sample message ("hiii": "hello").
+- Status Code: `200 OK`
+- Body: JSON object containing details of the all students.
 
 ---
 

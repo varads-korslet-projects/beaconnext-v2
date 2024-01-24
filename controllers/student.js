@@ -123,8 +123,17 @@ exports.currentStudent = async (req, res) => {
     }
 };
 
-
 exports.getAll = async (req, res) => {
-    console.log("getAll");
-    res.status(201).json({"hiii":"hello"});
-}
+    try {
+        const passkey = req.headers['passkey'];
+        if(passkey == process.env.passkeyStudent){
+            const students = await Student.find();
+            res.status(200).json(students);
+        }else{
+            res.status(500).json({ error: "Wrong passkey" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error });
+    }
+};

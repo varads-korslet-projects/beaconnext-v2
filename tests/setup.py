@@ -78,4 +78,5 @@ def install_requirements():
             sys.exit(1)
 
 if __name__ == "__main__":
-    
+    create_virtual_environment()
+    install_requirements()

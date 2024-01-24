@@ -15,6 +15,8 @@ Returns JSON:
 {"hiii":"hello"}
 ```
 
+---
+
 # Student API Documentation
 
 ## Create Student Accounts

@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
   bcrypt = require('bcrypt')
 const Student = require('../models/student')
 const Attendance = require('../models/attendance');
+const Lecture = require('../models/lecture')
 
 exports.createStudentAccounts = async(req,res) => {
     try {

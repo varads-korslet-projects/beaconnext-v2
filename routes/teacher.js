@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 //middlewares
-//const {authCheck} = require("../middlewares/auth");
+const {authCheckTeacher} = require("../middlewares/auth");
 
 const {createTeacherAccounts, firstLogin, teacherLogin} = require('../controllers/teacher');
 

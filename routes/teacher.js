@@ -7,7 +7,7 @@ const router = express.Router()
 
 const {createTeacherAccounts, firstLogin, teacherLogin} = require('../controllers/teacher');
 
-router.post("/current-teacher", authCheckTeacher, currentTeacher );
+router.get("/current-teacher", authCheckTeacher, currentTeacher );
 router.post("/create-teacher-accounts",createTeacherAccounts);
 router.post("/first-teacher-login", firstLogin);
 router.post("/teacher-login", teacherLogin)

@@ -47,7 +47,7 @@ exports.teacherLogin = async (req,res)=>{
         if(teacher==null){
             res.status(401).json({error: "Wrong Id or Password"});
         }
-            const match = await bcrypt.compare(password, student.hash_password)
+            const match = await bcrypt.compare(password, teacher.hash_password)
             if(match){
                 const token = jwt.sign({ email: teacher.email, name: teacher.name, _id: teacher._id, role: "teacher" },  process.env.signingkey)
                 res.status(201).json({success: "Login successful", token});

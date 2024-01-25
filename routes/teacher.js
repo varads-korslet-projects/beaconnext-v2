@@ -5,7 +5,7 @@ const router = express.Router()
 //middlewares
 const {authCheckTeacher} = require("../middlewares/auth");
 
-const {createTeacherAccounts, firstLogin, teacherLogin} = require('../controllers/teacher');
+const {createTeacherAccounts, currentTeacher, firstLogin, teacherLogin} = require('../controllers/teacher');
 
 router.get("/current-teacher", authCheckTeacher, currentTeacher );
 router.post("/create-teacher-accounts",createTeacherAccounts);

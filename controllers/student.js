@@ -75,7 +75,7 @@ exports.studentLogin = async (req,res)=>{
 
 exports.countAttendance = async (req, res) => {
     const { lecture } = req.body;
-    const studentId = req.student.moodleId;
+    const studentId = req.student.Id;
 
     try {
         const lectureDetails = await Lecture.findOne({ _id: lecture });

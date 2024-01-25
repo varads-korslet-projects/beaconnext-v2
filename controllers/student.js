@@ -80,7 +80,7 @@ exports.countAttendance = async (req, res) => {
     try {
         const lectureDetails = await Lecture.findOne({ _id: lecture });
         const currentDate = new Date();
-
+        console.log(currentDate)
         if (currentDate >= lectureDetails.StartTime && currentDate <= lectureDetails.EndTime) {
             const attendance = await Attendance.findOne({ lecture, "students.Id": studentId });
 

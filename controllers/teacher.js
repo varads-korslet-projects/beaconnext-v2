@@ -61,3 +61,13 @@ exports.teacherLogin = async (req,res)=>{
         res.status(500).json({ error: error });
     }
 }
+
+exports.currentTeacher = async (req, res) => {
+    try {
+        const Teacher = await Teacher.findOne({ moodleId: req.teacher.email }).exec();
+        res.json(Teacher);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};

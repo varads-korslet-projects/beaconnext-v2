@@ -24,7 +24,7 @@ exports.firstLogin = async (req,res)=>{
     console.log(req.body);
     try{
         const teacher = await Teacher.findOne({email:email});
-        console.log(teacher.hash_password,oldPassword, teacher )
+        console.log(teacher.hash_password,oldPassword);
         if(teacher.hash_password == oldPassword ){
             hashed_password = bcrypt.hashSync(newPassword, 10);
             await Teacher.findOneAndUpdate({email:email}, {hash_password:hashed_password})

@@ -23,15 +23,19 @@ exports.firstLogin = async (req,res)=>{
     const {moodleId, oldPassword, newPassword, deviceId} =req.body;
     try{
         const student = await Student.findOne({moodleId:moodleId});
-        console.log(student.hash_password,oldPassword, student )
-        if(student.hash_password == oldPassword ){
-            hashed_password = bcrypt.hashSync(newPassword, 10);
-            await Student.findOneAndUpdate({moodleId:moodleId}, {hash_password:hashed_password, deviceId: deviceId})
-            const token = jwt.sign({ moodleId: student.moodleId, name: student.name, _id: student._id , role: "student"},  process.env.signingkey)
-            res.status(201).json({success: "Your password was changed successfully", token, deviceId});
-        }
-        else{
-            res.status(401).json({error: "Wrong Id or Password"});
+        if(!student.deviceId){
+            console.log(student.hash_password,oldPassword, student )
+            if(student.hash_password == oldPassword ){
+                hashed_password = bcrypt.hashSync(newPassword, 10);
+                await Student.findOneAndUpdate({moodleId:moodleId}, {hash_password:hashed_password, deviceId: deviceId})
+                const token = jwt.sign({ moodleId: student.moodleId, name: student.name, _id: student._id , role: "student"},  process.env.signingkey)
+                res.status(201).json({success: "Your password was changed successfully", token, deviceId});
+            }
+            else{
+                res.status(401).json({error: "Wrong Id or Password"});
+            }
+        } else {
+            res.status(403).json({error: "Can only do first login once"});
         }
     } catch (error) {
         console.error(error);

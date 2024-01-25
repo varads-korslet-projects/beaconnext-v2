@@ -117,7 +117,7 @@ exports.countAttendance = async (req, res) => {
                 }
             }
         } else {
-            return res.status(401).json({ status: 'error', error: 'Lecture is Inactive' });
+            return res.status(401).json({ status: 'error', error: 'Lecture is Inactive', time:lectureDetails.StartTime });
         }
     } catch (error) {
         console.error(error);

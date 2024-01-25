@@ -64,7 +64,7 @@ exports.teacherLogin = async (req,res)=>{
 
 exports.currentTeacher = async (req, res) => {
     try {
-        const currentTeacher = await Teacher.findOne({ moodleId: req.teacher.email }).exec();
+        const currentTeacher = await Teacher.findOne({ email: req.teacher.email }).exec();
         res.json(currentTeacher);
     } catch (error) {
         console.error(error);

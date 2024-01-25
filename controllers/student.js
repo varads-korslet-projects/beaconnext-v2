@@ -102,7 +102,7 @@ exports.countAttendance = async (req, res) => {
                     { $inc: { 'students.$.Count': 1 } },
                     { new: true }
                 );
-                console.log(attendee.students.Count, lectureDetails.minimumTime)
+                console.log(attendee)
                 if (attendee.students.Count > lectureDetails.minimumTime) {
                     await Attendance.findOneAndUpdate(
                         { _id: attendance._id, "students.Id": studentId },

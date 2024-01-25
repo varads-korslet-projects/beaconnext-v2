@@ -75,7 +75,7 @@ exports.studentLogin = async (req,res)=>{
 
 exports.countAttendance = async (req, res) => {
     const { lecture } = req.body;
-    const studentId = req.student.Id;
+    const studentId = req.student._id;
 
     try {
         const lectureDetails = await Lecture.findOne({ _id: lecture });
@@ -102,8 +102,8 @@ exports.countAttendance = async (req, res) => {
                     { $inc: { 'students.$.Count': 1 } },
                     { new: true }
                 );
-                console.log(attendee)
-                if (attendee.students.Count > lectureDetails.minimumTime) {
+                const index = attendance.students.findIndex(student => student.Id.equals(studentId));
+                if (attendance.students[index].Count > lectureDetails.minimumTime) {
                     await Attendance.findOneAndUpdate(
                         { _id: attendance._id, "students.Id": studentId },
                         { $set: { "students.$.Present": true } },

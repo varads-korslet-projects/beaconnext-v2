@@ -14,5 +14,5 @@ router.post("/first-student-login", firstLogin);
 router.post("/student-login", studentLogin)
 router.get("/getAll",  getAll);
 router.get("/test", test);
-router.get("/count-attendance", authCheckStudent, countAttendance)
+router.post("/count-attendance", authCheckStudent, countAttendance)
 module.exports = router; 

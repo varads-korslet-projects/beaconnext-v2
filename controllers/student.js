@@ -80,7 +80,7 @@ exports.countAttendance = async (req, res) => {
     try {
         const lectureDetails = await Lecture.findOne({ _id: lecture });
         const currentDate = new Date();
-=        if (currentDate >= lectureDetails.StartTime && currentDate <= lectureDetails.EndTime) {
+        if (currentDate >= lectureDetails.StartTime && currentDate <= lectureDetails.EndTime) {
             const attendance = await Attendance.findOne({ lecture, "students.Id": studentId });
 
             if (!attendance || attendance.students.length === 0) {
@@ -102,7 +102,7 @@ exports.countAttendance = async (req, res) => {
                     { $inc: { 'students.$.Count': 1 } },
                     { new: true }
                 );
-
+                console.log(attendee.students.Count, lectureDetails.minimumTime)
                 if (attendee.students.Count > lectureDetails.minimumTime) {
                     await Attendance.findOneAndUpdate(
                         { _id: attendance._id, "students.Id": studentId },

@@ -38,6 +38,10 @@ const studentSchema = new mongoose.Schema({
     hash_password: {
         type: String
     },
+    role: {
+        type:String,
+        default:"student"
+    }
 },
 {timestamps:true}
 );

@@ -64,8 +64,8 @@ exports.teacherLogin = async (req,res)=>{
 
 exports.currentTeacher = async (req, res) => {
     try {
-        const Teacher = await Teacher.findOne({ moodleId: req.teacher.email }).exec();
-        res.json(Teacher);
+        const currentTeacher = await Teacher.findOne({ moodleId: req.teacher.email }).exec();
+        res.json(currentTeacher);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

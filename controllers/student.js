@@ -46,6 +46,10 @@ exports.studentLogin = async (req,res)=>{
         if(student==null){
             res.status(401).json({error: "Wrong Id or Password"});
         }
+        if (!student.deviceId) {
+            res.status(401).json({ error: "Please do first login first" });
+            return;
+        }
         if(student.deviceId == deviceId){
             const match = await bcrypt.compare(password, student.hash_password)
             if(match){

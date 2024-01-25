@@ -81,7 +81,7 @@ exports.countAttendance = async (req,res)=>{
         if(currentDate >= lectureDetails.StartTime && currentDate <= EndTime){
             const attendance = await Attendance.findOne({lecture:lecture, "student.Id": student});
 
-        if(!attendance && attendance.students.length == 0 ){
+        if(!attendance || attendance.students.length == 0 ){
             const newStudentEntry = {
                 Id: 'student',
                 Count: 0 

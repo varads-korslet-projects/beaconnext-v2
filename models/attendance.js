@@ -1,5 +1,4 @@
-const mongoose = require('mongoose'),
-bcrypt = require('bcrypt')
+const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema;
 
 const attendanceSchema = new mongoose.Schema({
@@ -9,24 +8,21 @@ const attendanceSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    student:[{
-        "Id" :{
+    students: [{
+        Id: {
             type: ObjectId,
             ref: "Student",
             required: true
         },
-        "Count":{
+        Count: {
             type: Number,
             default: 0
         },
-        "Present":{
+        Present: {
             type: Boolean,
             default: false
         }
     }]
-},
-{timestamps:true}
-);
+}, { timestamps: true });
 
-
-module.exports = mongoose.model('Attendance', attendanceSchema)
+module.exports = mongoose.model('Attendance', attendanceSchema);

@@ -202,6 +202,27 @@ Example:
 - Status Code: `201 Created`
 - Body: JSON object containing details of the created lecture.
 
+## Lecture Status
+### Endpoint
+`GET /lecture-status`
+
+### Request Body
+- `lecture` (String): ObjectId of lecture we want to lookup
+
+### Response
+- 200: Status of the lecture (Ongoing/Inactive)
+
+## Upcoming Lectures
+
+### Request Headers
+- `Authorization` (String): JWT token for teacher authentication.
+
+### Endpoint
+`GET /upcoming`
+
+### Response
+- 200: Upcoming lectures for the faculty
+
 # Attendance API Documentation
 
 ## Count Attendance

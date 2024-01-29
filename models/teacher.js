@@ -16,6 +16,10 @@ const teacherSchema = new mongoose.Schema({
     hash_password: {
         type: String
     },
+    department: {
+        type: String,
+        default: "CS"
+    },
     role: {
         type:String,
         default:"teacher"

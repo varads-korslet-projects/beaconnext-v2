@@ -31,12 +31,18 @@ exports.createLecture = async (req, res) => {
 
 exports.lectureStatus = async (req, res) => {
   try {
-    const lectureDetails = await Lecture.findOne({ _id: lecture });
-    const currentDate = new Date();
-    if (currentDate >= lectureDetails.StartTime && currentDate <= lectureDetails.EndTime) {
-      return res.status(401).json({ status: 'ongoing'});
-    } else {
-        return res.status(401).json({ status: 'inactive'});
+    const { lecture } = req.body;
+    const passkey = req.headers['passkey'];
+    if(passkey == process.env.passkeyStudent){
+      const lectureDetails = await Lecture.findOne({ _id: lecture });
+      const currentDate = new Date();
+      if (currentDate >= lectureDetails.StartTime && currentDate <= lectureDetails.EndTime) {
+        return res.status(401).json({ status: 'ongoing'});
+      } else {
+          return res.status(401).json({ status: 'inactive'});
+      }
+    }else{
+        res.status(500).json({ error: "Wrong passkey" });
     }
   } 
   catch (error) {

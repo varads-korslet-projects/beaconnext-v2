@@ -36,10 +36,13 @@ exports.lectureStatus = async (req, res) => {
     if(passkey == process.env.passkeyStudent){
       const lectureDetails = await Lecture.findOne({ _id: lecture });
       const currentDate = new Date();
+      if (!lectureDetails) {
+        return res.status(404).json({ status: "Not Found!" });
+      }
       if (currentDate >= lectureDetails.StartTime && currentDate <= lectureDetails.EndTime) {
-        return res.status(401).json({ status: 'ongoing'});
+        return res.status(200).json({ status: 'ongoing'});
       } else {
-          return res.status(401).json({ status: 'inactive'});
+          return res.status(200).json({ status: 'inactive'});
       }
     }else{
         res.status(500).json({ error: "Wrong passkey" });

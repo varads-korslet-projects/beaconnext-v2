@@ -18,6 +18,10 @@ const studentSchema = new mongoose.Schema({
         required: true,
         index : true,
     },
+    department: {
+        type: String,
+        default: "CS"
+    },
     year:{
         type: Number,
         required: true,

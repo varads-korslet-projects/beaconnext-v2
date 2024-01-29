@@ -6,6 +6,10 @@ const teacherSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    gender: {
+        type: String,
+        default: "M"
+    },
     email: {
         type : String,
         unique:true,

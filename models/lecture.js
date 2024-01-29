@@ -21,7 +21,7 @@ const lectureSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        default: "CS"
+        required: true,
     },
     year:{
         type: Number,

@@ -28,3 +28,19 @@ exports.createLecture = async (req, res) => {
     res.status(500).json({ error: error });
   }
 }
+
+exports.lectureStatus = async (req, res) => {
+  try {
+    const lectureDetails = await Lecture.findOne({ _id: lecture });
+    const currentDate = new Date();
+    if (currentDate >= lectureDetails.StartTime && currentDate <= lectureDetails.EndTime) {
+      return res.status(401).json({ status: 'ongoing'});
+    } else {
+        return res.status(401).json({ status: 'inactive'});
+    }
+  } 
+  catch (error) {
+      console.error(error);
+      return res.status(500).json({ status: 'error', error: error.message });
+  }
+}

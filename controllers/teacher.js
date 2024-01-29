@@ -25,7 +25,7 @@ exports.firstLogin = async (req,res)=>{
     try{
         const teacher = await Teacher.findOne({email:email});
         if(!teacher){
-            res.status(401).json({error: "Email ID does not exist!"});
+            res.status(404).json({error: "Email ID does not exist!"});
             return;
         }
         console.log(teacher.hash_password,oldPassword);
@@ -49,7 +49,7 @@ exports.teacherLogin = async (req,res)=>{
     try{
         const teacher = await Teacher.findOne({email:email});
         if(!teacher){
-            res.status(401).json({error: "Moodle ID does not exist!"});
+            res.status(404).json({error: "Email ID does not exist!"});
             return;
         }
         if(teacher==null){

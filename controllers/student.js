@@ -25,7 +25,7 @@ exports.firstLogin = async (req,res)=>{
     try{
         const student = await Student.findOne({moodleId:moodleId});
         if(!student){
-            res.status(401).json({error: "Moodle ID does not exist!"});
+            res.status(404).json({error: "Moodle ID does not exist!"});
             return;
         }
         if(!student.deviceId){
@@ -53,7 +53,7 @@ exports.studentLogin = async (req,res)=>{
     try{
         const student = await Student.findOne({moodleId:moodleId});
         if(!student){
-            res.status(401).json({error: "Moodle ID does not exist!"});
+            res.status(404).json({error: "Moodle ID does not exist!"});
             return;
         }
         if(student==null){

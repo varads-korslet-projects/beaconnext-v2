@@ -5,9 +5,10 @@ const router = express.Router()
 //middlewares
 const {authCheckTeacher} = require("../middlewares/auth");
 
-const {createLecture, lectureStatus} = require('../controllers/lecture');
+const {createLecture, lectureStatus, upcomingLectures} = require('../controllers/lecture');
 
 
 router.post("/create-lecture",authCheckTeacher ,createLecture);
 router.get("/lecture-status", lectureStatus);
+router.get("/upcoming",authCheckTeacher, upcomingLectures);
 module.exports = router;

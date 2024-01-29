@@ -24,6 +24,10 @@ exports.firstLogin = async (req,res)=>{
     console.log(req.body);
     try{
         const teacher = await Teacher.findOne({email:email});
+        if(!teacher){
+            res.status(401).json({error: "Email ID does not exist!"});
+            return;
+        }
         console.log(teacher.hash_password,oldPassword);
         if(teacher.hash_password == oldPassword ){
             hashed_password = bcrypt.hashSync(newPassword, 10);
@@ -44,6 +48,10 @@ exports.teacherLogin = async (req,res)=>{
     const {email, password} = req.body;
     try{
         const teacher = await Teacher.findOne({email:email});
+        if(!teacher){
+            res.status(401).json({error: "Moodle ID does not exist!"});
+            return;
+        }
         if(teacher==null){
             res.status(401).json({error: "Wrong Id or Password"});
         }

@@ -24,6 +24,10 @@ exports.firstLogin = async (req,res)=>{
     const {moodleId, oldPassword, newPassword, deviceId} =req.body;
     try{
         const student = await Student.findOne({moodleId:moodleId});
+        if(!student){
+            res.status(401).json({error: "Moodle ID does not exist!"});
+            return;
+        }
         if(!student.deviceId){
             console.log(student.hash_password,oldPassword, student )
             if(student.hash_password == oldPassword ){
@@ -48,6 +52,10 @@ exports.studentLogin = async (req,res)=>{
     const {moodleId, password, deviceId} = req.body;
     try{
         const student = await Student.findOne({moodleId:moodleId});
+        if(!student){
+            res.status(401).json({error: "Moodle ID does not exist!"});
+            return;
+        }
         if(student==null){
             res.status(401).json({error: "Wrong Id or Password"});
         }

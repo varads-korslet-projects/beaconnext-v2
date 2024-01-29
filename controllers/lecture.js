@@ -53,3 +53,28 @@ exports.lectureStatus = async (req, res) => {
       return res.status(500).json({ status: 'error', error: error.message });
   }
 }
+
+exports.upcomingLectures = async (req, res) => {
+  try {
+    const passkey = req.headers['passkey'];
+    const currentTeacher = await Teacher.findOne({ email: req.teacher.email }).exec();
+
+    if (passkey == process.env.passkeyStudent) {
+      const currentDate = new Date();
+
+      // Find upcoming lectures for a specific teacher where StartTime is greater than the current date
+      const upcomingLectures = await Lecture.find({
+        teacher: currentTeacher._id,
+        StartTime: { $gt: currentDate },
+        EndTime: { $gt: currentDate }
+      }).sort({ StartTime: 1 });
+
+      res.status(200).json(upcomingLectures);
+    } else {
+      res.status(500).json({ error: "Wrong passkey" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 'error', error: error.message });
+  }
+}

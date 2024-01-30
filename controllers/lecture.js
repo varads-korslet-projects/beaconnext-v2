@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
   bcrypt = require('bcrypt')
 const Lecture = require('../models/lecture')
 const Teacher = require('../models/teacher')
+const Student = require('../models/student')
 
 exports.createLecture = async (req, res) => {
   try {
@@ -85,6 +86,51 @@ exports.ongoingLecturesTeacher = async (req, res) => {
     const upcomingLectures = await Lecture.find({
       teacher: currentTeacher._id,
       StartTime: { $lt: currentDate },
+      EndTime: { $gt: currentDate }
+    }).sort({ StartTime: 1 });
+
+    res.status(200).json(upcomingLectures);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 'error', error: error.message });
+  }
+}
+
+
+exports.ongoingLecturesStudent = async (req, res) => {
+  try {
+    const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
+
+    const currentDate = new Date();
+
+    const upcomingLectures = await Lecture.find({
+      department: currentStudent.department,
+      year: currentStudent.year,
+      division: currentStudent.division,
+      StartTime: { $lt: currentDate },
+      EndTime: { $gt: currentDate }
+    }).sort({ StartTime: 1 });
+
+    res.status(200).json(upcomingLectures);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 'error', error: error.message });
+  }
+}
+
+exports.upcomingLecturesTeacher = async (req, res) => {
+  try {
+    const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
+
+    const currentDate = new Date();
+
+    const upcomingLectures = await Lecture.find({
+      department: currentStudent.department,
+      year: currentStudent.year,
+      division: currentStudent.division,
+      StartTime: { $gt: currentDate },
       EndTime: { $gt: currentDate }
     }).sort({ StartTime: 1 });
 

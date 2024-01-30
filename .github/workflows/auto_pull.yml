@@ -1,0 +1,17 @@
+name: Auto Pull on Commit
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  auto_pull:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Pull changes
+      run: git pull

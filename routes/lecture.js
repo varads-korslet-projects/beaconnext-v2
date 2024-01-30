@@ -10,6 +10,6 @@ const {createLecture, lectureStatus, upcomingLectures, ongoingLectures} = requir
 
 router.post("/create-lecture",authCheckTeacher ,createLecture);
 router.get("/lecture-status", lectureStatus);
-router.get("/upcoming",authCheckTeacher, upcomingLectures);
-router.get("/ongoing",authCheckTeacher, ongoingLectures);
+router.get("/upcoming-teacher",authCheckTeacher, upcomingLectures);
+router.get("/ongoing-teacher",authCheckTeacher, ongoingLectures);
 module.exports = router;

@@ -3,11 +3,13 @@ const mongoose = require('mongoose')
 const beaconSchema = new mongoose.Schema({   
     Id: {
         type: String,
-        required: true
+        required: true,
+        unique : true
     },
     RoomNo: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
 });
 

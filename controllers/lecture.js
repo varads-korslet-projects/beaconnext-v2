@@ -116,7 +116,7 @@ exports.ongoingLecturesStudent = async (req, res) => {
   }
 }
 
-exports.upcomingLecturesTeacher = async (req, res) => {
+exports.upcomingLecturesStudent = async (req, res) => {
   try {
     const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
 

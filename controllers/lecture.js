@@ -55,7 +55,7 @@ exports.lectureStatus = async (req, res) => {
   }
 }
 
-exports.upcomingLectures = async (req, res) => {
+exports.upcomingLecturesTeacher = async (req, res) => {
   try {
     const currentTeacher = await Teacher.findOne({ email: req.teacher.email }).exec();
 
@@ -76,7 +76,7 @@ exports.upcomingLectures = async (req, res) => {
   }
 }
 
-exports.ongoingLectures = async (req, res) => {
+exports.ongoingLecturesTeacher = async (req, res) => {
   try {
     const currentTeacher = await Teacher.findOne({ email: req.teacher.email }).exec();
 

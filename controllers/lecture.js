@@ -5,25 +5,21 @@ const Lecture = require('../models/lecture')
 const Teacher = require('../models/teacher')
 const Student = require('../models/student')
 
-exports.createLecture = async (req, res) => {
+exports.createLectures = async (req, res) => {
   try {
-    const { subjectName, StartTime, EndTime, year, division, class: lectureClass, minimumTime } = req.body;
+    const lectures = req.body;
 
     // Extract teacher ID from the authenticated request
     const teacherId = req.teacher._id;
 
-    const lecture = {
-      subjectName,
-      teacher: teacherId,
-      StartTime,
-      EndTime,
-      year,
-      division,
-      class: lectureClass,
-      minimumTime
-    };
+    // Modify the lectures array to include teacher ID for each lecture
+    const lecturesWithTeacherId = lectures.map(lecture => ({
+      ...lecture,
+      teacher: teacherId
+    }));
 
-    const result = await Lecture.create(lecture);
+    // Insert all lectures into the database
+    const result = await Lecture.insertMany(lecturesWithTeacherId);
     res.status(201).json(result);
   } catch (error) {
     console.error(error);

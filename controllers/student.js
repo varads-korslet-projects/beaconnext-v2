@@ -33,7 +33,7 @@ exports.firstLogin = async (req,res)=>{
             if(student.hash_password == oldPassword ){
                 hashed_password = bcrypt.hashSync(newPassword, 10);
                 await Student.findOneAndUpdate({moodleId:moodleId}, {hash_password:hashed_password, deviceId: deviceId})
-                const token = jwt.sign({ moodleId: student.moodleId, name: student.name, _id: student._id , role: "student"},  process.env.signingkey)
+                const token = jwt.sign({ moodleId: student.moodleId, name: student.name, _id: student._id , role: "student"},  process.env.signingkey, { expiresIn: '1d' })
                 res.status(201).json({success: "Your password was changed successfully", token, deviceId});
             }
             else{
@@ -66,7 +66,7 @@ exports.studentLogin = async (req,res)=>{
         if(student.deviceId == deviceId){
             const match = await bcrypt.compare(password, student.hash_password)
             if(match){
-                const token = jwt.sign({ moodleId: student.moodleId, name: student.name, _id: student._id, role: "student" },  process.env.signingkey)
+                const token = jwt.sign({ moodleId: student.moodleId, name: student.name, _id: student._id, role: "student" },  process.env.signingkey, { expiresIn: '1d' })
                 res.status(201).json({success: "Login successful", token});
             }
             else{

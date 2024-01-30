@@ -32,7 +32,7 @@ exports.firstLogin = async (req,res)=>{
         if(teacher.hash_password == oldPassword ){
             hashed_password = bcrypt.hashSync(newPassword, 10);
             await Teacher.findOneAndUpdate({email:email}, {hash_password:hashed_password})
-            const token = jwt.sign({ email: teacher.email, name: teacher.name, _id: teacher._id , role: "teacher"},  process.env.signingkey)
+            const token = jwt.sign({ email: teacher.email, name: teacher.name, _id: teacher._id , role: "teacher"},  process.env.signingkey, { expiresIn: '1d' })
             res.status(201).json({success: "Your password was changed successfully", token});
         }
         else{
@@ -57,7 +57,7 @@ exports.teacherLogin = async (req,res)=>{
         }
             const match = await bcrypt.compare(password, teacher.hash_password)
             if(match){
-                const token = jwt.sign({ email: teacher.email, name: teacher.name, _id: teacher._id, role: "teacher" },  process.env.signingkey)
+                const token = jwt.sign({ email: teacher.email, name: teacher.name, _id: teacher._id, role: "teacher" },  process.env.signingkeym, { expiresIn: '1d' })
                 res.status(201).json({success: "Login successful", token});
             }
             else{

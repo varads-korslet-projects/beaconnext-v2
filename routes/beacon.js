@@ -3,9 +3,9 @@ const express = require('express')
 const router = express.Router()
 
 //middlewares
-const {mapBeacon} = require('../controllers/beacon');
+const {mapBeacon, getRoom} = require('../controllers/beacon');
 
 
 router.post("/map-beacon", mapBeacon);
-
+router.post("/get-room", getRoom)
 module.exports = router;

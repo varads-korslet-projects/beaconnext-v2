@@ -15,3 +15,23 @@ exports.mapBeacon = async(req,res) => {
         res.status(500).json({ error: error });
       }
 }
+
+exports.getRoom = async (req, res) => {
+    try {
+        const beaconUuid = req.body.uuid;
+        if(!beaconUuid) {
+            return res.status(404).json({ error: 'UUID not found in reqest' });
+        }
+        const beacon = await Beacon.findOne({ Id: beaconUuid });
+
+        if (!beacon) {
+            return res.status(404).json({ error: 'Beacon not found' });
+        }
+
+        const roomNumber = beacon.RoomNo;
+        res.status(200).json({ roomNumber });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};

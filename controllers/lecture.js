@@ -5,7 +5,7 @@ const Lecture = require('../models/lecture')
 const Teacher = require('../models/teacher')
 const Student = require('../models/student')
 
-exports.createLectures = async (req, res) => {
+exports.createLecture = async (req, res) => {
   try {
     const lectures = req.body;
 

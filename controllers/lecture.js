@@ -75,3 +75,23 @@ exports.upcomingLectures = async (req, res) => {
     res.status(500).json({ status: 'error', error: error.message });
   }
 }
+
+exports.ongoingLectures = async (req, res) => {
+  try {
+    const currentTeacher = await Teacher.findOne({ email: req.teacher.email }).exec();
+
+    const currentDate = new Date();
+
+    const upcomingLectures = await Lecture.find({
+      teacher: currentTeacher._id,
+      StartTime: { $lt: currentDate },
+      EndTime: { $gt: currentDate }
+    }).sort({ StartTime: 1 });
+
+    res.status(200).json(upcomingLectures);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 'error', error: error.message });
+  }
+}

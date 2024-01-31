@@ -68,7 +68,18 @@ exports.upcomingLecturesTeacher = async (req, res) => {
       teacher: currentTeacher._id,
       StartTime: { $gt: currentDate },
       EndTime: { $gt: currentDate }
-    }).sort({ StartTime: 1 });
+    }).sort({ StartTime: 1 }).lean();
+
+    for (let i = 0; i < upcomingLectures.length; i++) {
+      const teacher = await Teacher.findById(upcomingLectures[i].teacher).exec();
+      if (teacher) {
+        // Add lecturer property to the lecture object
+        upcomingLectures[i].lecturer = teacher.name;
+      } else {
+        // Handle the case where the teacher is not found
+        upcomingLectures[i].lecturer = "Unknown";
+      }
+    }
 
     res.status(200).json(upcomingLectures);
 
@@ -88,10 +99,22 @@ exports.ongoingLecturesTeacher = async (req, res) => {
       teacher: currentTeacher._id,
       StartTime: { $lt: currentDate },
       EndTime: { $gt: currentDate }
-    }).sort({ StartTime: 1 });
+    }).sort({ StartTime: 1 }).lean();
+
+    for (let i = 0; i < upcomingLectures.length; i++) {
+      const teacher = await Teacher.findById(upcomingLectures[i].teacher).exec();
+      if (teacher) {
+        // Add lecturer property to the lecture object
+        upcomingLectures[i].lecturer = teacher.name;
+      } else {
+        // Handle the case where the teacher is not found
+        upcomingLectures[i].lecturer = "Unknown";
+      }
+    }
+
     upcomingLectures.lecturer = currentTeacher.name
     res.status(200).json(upcomingLectures);
-
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: 'error', error: error.message });
@@ -111,7 +134,19 @@ exports.ongoingLecturesStudent = async (req, res) => {
       division: currentStudent.division,
       StartTime: { $lt: currentDate },
       EndTime: { $gt: currentDate }
-    }).sort({ StartTime: 1 });
+    }).sort({ StartTime: 1 }).lean();
+
+    // Iterate through each lecture and fetch teacher's name
+    for (let i = 0; i < upcomingLectures.length; i++) {
+      const teacher = await Teacher.findById(upcomingLectures[i].teacher).exec();
+      if (teacher) {
+        // Add lecturer property to the lecture object
+        upcomingLectures[i].lecturer = teacher.name;
+      } else {
+        // Handle the case where the teacher is not found
+        upcomingLectures[i].lecturer = "Unknown";
+      }
+    }
 
     res.status(200).json(upcomingLectures);
 
@@ -133,7 +168,18 @@ exports.upcomingLecturesStudent = async (req, res) => {
       division: currentStudent.division,
       StartTime: { $gt: currentDate },
       EndTime: { $gt: currentDate }
-    }).sort({ StartTime: 1 });
+    }).sort({ StartTime: 1 }).lean();
+
+    for (let i = 0; i < upcomingLectures.length; i++) {
+      const teacher = await Teacher.findById(upcomingLectures[i].teacher).exec();
+      if (teacher) {
+        // Add lecturer property to the lecture object
+        upcomingLectures[i].lecturer = teacher.name;
+      } else {
+        // Handle the case where the teacher is not found
+        upcomingLectures[i].lecturer = "Unknown";
+      }
+    }
 
     res.status(200).json(upcomingLectures);
 

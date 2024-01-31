@@ -52,17 +52,14 @@ exports.teacherLogin = async (req,res)=>{
             res.status(404).json({error: "Email ID does not exist!"});
             return;
         }
-        if(teacher==null){
+        const match = await bcrypt.compare(password, teacher.hash_password)
+        if(match){
+            const token = jwt.sign({ email: teacher.email, name: teacher.name, _id: teacher._id, role: "teacher" },  process.env.signingkey, { expiresIn: '1d' })
+            res.status(201).json({success: "Login successful", token});
+        }
+        else{
             res.status(401).json({error: "Wrong Id or Password"});
         }
-            const match = await bcrypt.compare(password, teacher.hash_password)
-            if(match){
-                const token = jwt.sign({ email: teacher.email, name: teacher.name, _id: teacher._id, role: "teacher" },  process.env.signingkeym, { expiresIn: '1d' })
-                res.status(201).json({success: "Login successful", token});
-            }
-            else{
-                res.status(401).json({error: "Wrong Id or Password"});
-            }
 
     } catch (error) {
         console.error(error);

@@ -17,6 +17,7 @@ exports.createLecture = async (req, res) => {
       teacher: teacherId,
       StartTime,
       EndTime,
+      department,
       year,
       division,
       class: lectureClass,

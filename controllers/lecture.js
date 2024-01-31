@@ -7,7 +7,7 @@ const Student = require('../models/student')
 
 exports.createLecture = async (req, res) => {
   try {
-    const { subjectName, StartTime, EndTime, year, division, class: lectureClass, minimumTime } = req.body;
+    const { subjectName, StartTime, EndTime, department, year, division, class: lectureClass, minimumTime } = req.body;
 
     // Extract teacher ID from the authenticated request
     const teacherId = req.teacher._id;

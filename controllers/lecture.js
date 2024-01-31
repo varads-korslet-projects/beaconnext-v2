@@ -89,7 +89,7 @@ exports.ongoingLecturesTeacher = async (req, res) => {
       StartTime: { $lt: currentDate },
       EndTime: { $gt: currentDate }
     }).sort({ StartTime: 1 });
-
+    upcomingLectures.lecturer = currentTeacher.name
     res.status(200).json(upcomingLectures);
 
   } catch (error) {

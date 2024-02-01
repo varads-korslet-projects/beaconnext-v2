@@ -29,7 +29,6 @@ exports.firstLogin = async (req,res)=>{
             return;
         }
         if(student.deviceId=="NULL"){
-            console.log(student.hash_password,oldPassword, student )
             if(student.hash_password == oldPassword ){
                 hashed_password = bcrypt.hashSync(newPassword, 10);
                 await Student.findOneAndUpdate({moodleId:moodleId}, {hash_password:hashed_password, deviceId: deviceId})

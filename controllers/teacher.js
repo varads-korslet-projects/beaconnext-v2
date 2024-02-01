@@ -21,14 +21,12 @@ exports.createTeacherAccounts = async(req,res) => {
 
 exports.firstLogin = async (req,res)=>{
     const {email, oldPassword, newPassword} =req.body;
-    console.log(req.body);
     try{
         const teacher = await Teacher.findOne({email:email});
         if(!teacher){
             res.status(404).json({error: "Email ID does not exist!"});
             return;
         }
-        console.log(teacher.hash_password,oldPassword);
         if(teacher.hash_password == oldPassword ){
             hashed_password = bcrypt.hashSync(newPassword, 10);
             await Teacher.findOneAndUpdate({email:email}, {hash_password:hashed_password})

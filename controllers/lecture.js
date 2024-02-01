@@ -188,3 +188,68 @@ exports.upcomingLecturesStudent = async (req, res) => {
     res.status(500).json({ status: 'error', error: error.message });
   }
 }
+
+exports.historyLecturesStudent = async (req, res) => {
+  try {
+    const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
+
+    const currentDate = new Date();
+
+    const upcomingLectures = await Lecture.find({
+      department: currentStudent.department,
+      year: currentStudent.year,
+      division: currentStudent.division,
+      StartTime: { $lt: currentDate },
+      EndTime: { $lt: currentDate }
+    }).sort({ StartTime: 1 }).lean();
+
+    for (let i = 0; i < upcomingLectures.length; i++) {
+      const teacher = await Teacher.findById(upcomingLectures[i].teacher).exec();
+      if (teacher) {
+        // Add lecturer property to the lecture object
+        upcomingLectures[i].lecturer = teacher.name;
+      } else {
+        // Handle the case where the teacher is not found
+        upcomingLectures[i].lecturer = "Unknown";
+      }
+    }
+
+    res.status(200).json(upcomingLectures);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 'error', error: error.message });
+  }
+}
+
+exports.historyLecturesTeacher = async (req, res) => {
+  try {
+    const currentTeacher = await Teacher.findOne({ email: req.teacher.email }).exec();
+
+    const currentDate = new Date();
+
+    const upcomingLectures = await Lecture.find({
+      teacher: currentTeacher._id,
+      StartTime: { $lt: currentDate },
+      EndTime: { $lt: currentDate }
+    }).sort({ StartTime: 1 }).lean();
+
+    for (let i = 0; i < upcomingLectures.length; i++) {
+      const teacher = await Teacher.findById(upcomingLectures[i].teacher).exec();
+      if (teacher) {
+        // Add lecturer property to the lecture object
+        upcomingLectures[i].lecturer = teacher.name;
+      } else {
+        // Handle the case where the teacher is not found
+        upcomingLectures[i].lecturer = "Unknown";
+      }
+    }
+
+    upcomingLectures.lecturer = currentTeacher.name
+    res.status(200).json(upcomingLectures);
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 'error', error: error.message });
+  }
+}

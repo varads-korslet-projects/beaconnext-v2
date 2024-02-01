@@ -1,7 +1,6 @@
 const Attendance = require('../models/attendance')
 const Beacon = require('../models/beacon')
 const Lecture = require('../models/lecture')
-const student = require('../models/student')
 const Student = require('../models/student')
 const Teacher = require('../models/teacher')
 
@@ -32,6 +31,25 @@ exports.deleteAllStudents = async (req, res) => {
 
             res.status(200).json({
                 deletedStudents
+            });
+
+        } else {
+            res.status(500).json({ error: "Wrong passkey" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.deleteAllTeachers = async (req, res) => {
+    try {
+        const passkey = req.headers['passkey'];
+        if (passkey === process.env.passkeyAdmin) {
+            const deletedTeachers = await Teacher.deleteMany({});
+
+            res.status(200).json({
+                deletedTeachers
             });
 
         } else {

@@ -67,7 +67,11 @@ exports.countAttendance = async (req, res) => {
 
     try {
         const beacon = await Beacon.findOne({ Id: uuid });
+        if(!beacon){
+            return res.status(404).json({status: "Beacon not found", message: "Please make sure beaconid is correct"})
+        }
         room = beacon.RoomNo
+        
         const currentDate = new Date();
         console.log(currentStudent)
         const lectureDetails = await Lecture.findOne({

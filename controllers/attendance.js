@@ -45,6 +45,21 @@ exports.getAttendanceReport = async (req, res) => {
     }
 };
 
+exports.getAttendanceLecture = async(req,res) => {
+    const { lectureId } = req.body;
+
+    const lecture = await Attendance.findOne({ lecture: lectureId }).populate({
+        path: 'students.Id',
+        model: 'Student',
+        select: 'name'
+    }).lean();
+    const lectureAttendance = lecture.students.map(item => {
+        const { Id: { _id: Id, ...IdRest }, _id, ...newItem } = item;
+        return { Id: IdRest, ...newItem  };
+    });
+    
+    return res.status(200).json(lectureAttendance);
+}
 
 exports.countAttendance = async (req, res) => {
     const { uuid } = req.body;

@@ -81,57 +81,6 @@ exports.studentLogin = async (req,res)=>{
     }
 }
 
-exports.countAttendance = async (req, res) => {
-    const { lecture } = req.body;
-    const studentId = req.student._id;
-
-    try {
-        const lectureDetails = await Lecture.findOne({ _id: lecture });
-        const currentDate = new Date();
-        if (currentDate >= lectureDetails.StartTime && currentDate <= lectureDetails.EndTime) {
-            const attendance = await Attendance.findOne({ lecture, "students.Id": studentId });
-
-            if (!attendance || attendance.students.length === 0) {
-                const newStudentEntry = {
-                    Id: studentId,
-                    Count: 0
-                };
-
-                const updatedAttendance = await Attendance.findOneAndUpdate(
-                    { lecture },
-                    { $push: { students: newStudentEntry } },
-                    { new: true, upsert: true }
-                );
-
-                return res.status(200).json({ status: 'success', message: 'Created and Counted' });
-            } else {
-                const attendee = await Attendance.findOneAndUpdate(
-                    { _id: attendance._id, "students.Id": studentId },
-                    { $inc: { 'students.$.Count': 1 } },
-                    { new: true }
-                );
-                const index = attendance.students.findIndex(student => student.Id.equals(studentId));
-                if (attendance.students[index].Count > lectureDetails.minimumTime) {
-                    await Attendance.findOneAndUpdate(
-                        { _id: attendance._id, "students.Id": studentId },
-                        { $set: { "students.$.Present": true } },
-                        { new: true }
-                    );
-
-                    return res.status(200).json({ status: 'success', message: 'You have been marked present' });
-                } else {
-                    return res.status(200).json({ status: 'success', message: 'Counted' });
-                }
-            }
-        } else {
-            return res.status(401).json({ status: 'error', error: 'Lecture is Inactive', time:lectureDetails.StartTime });
-        }
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ status: 'error', error: error.message });
-    }
-};
-
 exports.currentStudent = async (req, res) => {
     try {
         const student = await Student.findOne({ moodleId: req.student.moodleId }).exec();

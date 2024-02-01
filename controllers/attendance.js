@@ -1,6 +1,7 @@
 const Attendance = require('../models/attendance');
 const Lecture = require('../models/lecture');
 const Student = require('../models/student');
+const Beacon = require('../models/beacon');
 
 exports.getAttendanceReport = async (req, res) => {
     try {
@@ -41,5 +42,69 @@ exports.getAttendanceReport = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
+exports.countAttendance = async (req, res) => {
+    const { uuid } = req.body;
+    const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
+
+    try {
+        const beacon = await Beacon.findOne({ Id: uuid });
+        room = beacon.RoomNo
+        const currentDate = new Date();
+        console.log(currentStudent)
+        const lectureDetails = await Lecture.findOne({
+            department: currentStudent.department,
+            year: currentStudent.year,
+            division: currentStudent.division,
+            StartTime: { $lt: currentDate },
+            EndTime: { $gt: currentDate },
+            class: room
+          })
+        
+        if(!lectureDetails){
+            return res.status(404).json({status: 'inactive or not found', message: 'You do not have a lecture in this room right now!'})
+        }
+        lecture = lectureDetails._id
+        
+        const attendance = await Attendance.findOne({ lecture, "students.Id": currentStudent._id });
+
+        if (!attendance || attendance.students.length === 0) {
+            const newStudentEntry = {
+                Id: currentStudent._id,
+                Count: 1
+            };
+
+            const updatedAttendance = await Attendance.findOneAndUpdate(
+                { lecture },
+                { $push: { students: newStudentEntry } },
+                { new: true, upsert: true }
+            );
+
+            return res.status(200).json({ status: 'success', message: 'Created and Counted' });
+        } else {
+            const attendee = await Attendance.findOneAndUpdate(
+                { _id: attendance._id, "students.Id": currentStudent._id },
+                { $inc: { 'students.$.Count': 1 } },
+                { new: true }
+            );
+            const index = attendance.students.findIndex(s => s.Id.equals(currentStudent._id));
+            if (attendance.students[index].Count >= lectureDetails.minimumTime) {
+                await Attendance.findOneAndUpdate(
+                    { _id: attendance._id, "students.Id": currentStudent._id },
+                    { $set: { "students.$.Present": true } },
+                    { new: true }
+                );
+
+                return res.status(200).json({ status: 'success', message: 'You have been marked present' });
+            } else {
+                return res.status(200).json({ status: 'success', message: 'Counted' });
+            }
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: 'error', error: error.message });
     }
 };

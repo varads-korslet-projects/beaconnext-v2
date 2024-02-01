@@ -32,7 +32,7 @@ const lectureSchema = new mongoose.Schema({
         type: String,
          max: 2
     },
-    class:{
+    class:{ //roomno
         type: Number,
         required: true
     },

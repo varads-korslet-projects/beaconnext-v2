@@ -2,6 +2,7 @@ const Attendance = require('../models/attendance');
 const Lecture = require('../models/lecture');
 const Student = require('../models/student');
 const Beacon = require('../models/beacon');
+const { currentStudent } = require('./student');
 
 exports.getAttendanceReport = async (req, res) => {
     try {
@@ -61,6 +62,38 @@ exports.getAttendanceLecture = async(req,res) => {
     return res.status(200).json(lectureAttendance);
 }
 
+exports.markPresent = async(req,res) => {
+    const { moodleId, lectureId } = req.body;
+
+    const currentStudent = await Student.findOne({moodleId:moodleId})
+    const attendance = await Attendance.findOne({ lecture:lectureId, "students.Id": currentStudent._id });
+
+        if (!attendance || attendance.students.length === 0) {
+            const newStudentEntry = {
+                Id: currentStudent._id,
+                Count: 0,
+                Present: true
+            };
+
+        const updatedAttendance = await Attendance.findOneAndUpdate(
+            { lecture: lectureId },
+            { $push: { students: newStudentEntry } },
+            { new: true, upsert: true }
+        );
+
+        return res.status(200).json({ status: 'success', message: 'You have been marked present' });
+        } else {
+            await Attendance.findOneAndUpdate(
+                { _id: attendance._id, "students.Id": currentStudent._id },
+                { $set: { "students.$.Present": true } },
+                { new: true }
+            );
+
+            return res.status(200).json({ status: 'success', message: 'You have been marked present' });
+        }
+    
+}
+
 exports.countAttendance = async (req, res) => {
     const { uuid } = req.body;
     const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
@@ -73,7 +106,6 @@ exports.countAttendance = async (req, res) => {
         room = beacon.RoomNo
         
         const currentDate = new Date();
-        console.log(currentStudent)
         const lectureDetails = await Lecture.findOne({
             department: currentStudent.department,
             year: currentStudent.year,

@@ -28,7 +28,7 @@ exports.firstLogin = async (req,res)=>{
             res.status(404).json({error: "Moodle ID does not exist!"});
             return;
         }
-        if(!student.deviceId){
+        if(student.deviceId=="NULL"){
             console.log(student.hash_password,oldPassword, student )
             if(student.hash_password == oldPassword ){
                 hashed_password = bcrypt.hashSync(newPassword, 10);

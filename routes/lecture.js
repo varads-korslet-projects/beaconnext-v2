@@ -9,7 +9,7 @@ const {createLecture, lectureStatus, ongoingLecturesTeacher, upcomingLecturesTea
 
 
 router.post("/create-lecture",authCheckTeacher ,createLecture);
-router.get("/lecture-status", lectureStatus);
+router.post("/lecture-status", lectureStatus);
 router.get("/upcoming-teacher",authCheckTeacher, upcomingLecturesTeacher);
 router.get("/ongoing-teacher",authCheckTeacher, ongoingLecturesTeacher);
 router.get("/upcoming-student",authCheckStudent, upcomingLecturesStudent);

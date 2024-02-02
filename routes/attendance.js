@@ -7,7 +7,7 @@ const {getAttendanceReport, countAttendance, getAttendanceLecture, markPresent} 
 
 
 router.get("/get-attendance",authCheckTeacher, getAttendanceReport);
-router.get("/get-attendance-lecture",authCheckTeacher, getAttendanceLecture);
+router.post("/get-attendance-lecture",authCheckTeacher, getAttendanceLecture);
 router.post("/count-attendance", authCheckStudent, countAttendance)
 router.post("/mark-present", authCheckTeacher, markPresent)
 module.exports = router;

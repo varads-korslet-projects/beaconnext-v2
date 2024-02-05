@@ -7,6 +7,9 @@ const Teacher = require('../models/teacher')
 exports.deleteAllAttendance = async (req, res) => {
     try {
         const passkey = req.headers['passkey'];
+        if(!passkey){
+            return res.status(400).json({ status: 'Bad Request'});
+        }
         if (passkey === process.env.passkeyAdmin) {
             const deletedAttendances = await Attendance.deleteMany({});
 
@@ -26,6 +29,9 @@ exports.deleteAllAttendance = async (req, res) => {
 exports.deleteAllStudents = async (req, res) => {
     try {
         const passkey = req.headers['passkey'];
+        if(!passkey){
+            return res.status(400).json({ status: 'Bad Request'});
+        }
         if (passkey === process.env.passkeyAdmin) {
             const deletedStudents = await Student.deleteMany({});
 
@@ -45,6 +51,9 @@ exports.deleteAllStudents = async (req, res) => {
 exports.deleteAllTeachers = async (req, res) => {
     try {
         const passkey = req.headers['passkey'];
+        if(!passkey){
+            return res.status(400).json({ status: 'Bad Request'});
+        }
         if (passkey === process.env.passkeyAdmin) {
             const deletedTeachers = await Teacher.deleteMany({});
 
@@ -64,6 +73,9 @@ exports.deleteAllTeachers = async (req, res) => {
 exports.deleteAllLecture = async (req, res) => {
     try {
         const passkey = req.headers['passkey'];
+        if(!passkey){
+            return res.status(400).json({ status: 'Bad Request'});
+        }
         if (passkey === process.env.passkeyAdmin) {
             // Find all lectures
             const lectures = await Lecture.find({});

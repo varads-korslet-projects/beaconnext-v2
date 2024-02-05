@@ -7,8 +7,14 @@ const Student = require('../models/student')
 
 exports.createLecture = async (req, res) => {
   try {
-    const { subjectName, StartTime, EndTime, department, year, division, class: lectureClass, minimumTime } = req.body;
+    const { subjectName, StartTime, EndTime, department, year, division, roomNo, minimumTime } = req.body;
+    if(!subjectName || !StartTime || !EndTime || !department || !year || !division || !roomNo || !minimumTime ){
+      return res.status(400).json({ status: 'Bad Request'});
+    }
 
+    if(StartTime>EndTime) {
+      console.log("Works")
+    }
     // Extract teacher ID from the authenticated request
     const teacherId = req.teacher._id;
 
@@ -20,7 +26,7 @@ exports.createLecture = async (req, res) => {
       department,
       year,
       division,
-      class: lectureClass,
+      roomNo,
       minimumTime
     };
 
@@ -35,6 +41,9 @@ exports.createLecture = async (req, res) => {
 exports.lectureStatus = async (req, res) => {
   try {
     const { lecture } = req.body;
+    if(!lecture){
+      return res.status(400).json({ status: 'Bad Request'});
+    }
     const passkey = req.headers['passkey'];
     if(passkey == process.env.passkeyStudent){
       const lectureDetails = await Lecture.findOne({ _id: lecture });
@@ -60,7 +69,9 @@ exports.lectureStatus = async (req, res) => {
 exports.upcomingLecturesTeacher = async (req, res) => {
   try {
     const currentTeacher = await Teacher.findOne({ email: req.teacher.email }).exec();
-
+    if(!currentTeacher){
+      return res.status(400).json({ status: 'Bad Request'});
+    }
     const currentDate = new Date();
 
     // Find upcoming lectures for a specific teacher where StartTime is greater than the current date
@@ -92,7 +103,9 @@ exports.upcomingLecturesTeacher = async (req, res) => {
 exports.ongoingLecturesTeacher = async (req, res) => {
   try {
     const currentTeacher = await Teacher.findOne({ email: req.teacher.email }).exec();
-
+    if(!currentTeacher){
+      return res.status(400).json({ status: 'Bad Request'});
+    }
     const currentDate = new Date();
 
     const upcomingLectures = await Lecture.find({
@@ -125,7 +138,9 @@ exports.ongoingLecturesTeacher = async (req, res) => {
 exports.ongoingLecturesStudent = async (req, res) => {
   try {
     const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
-
+    if(!currentStudent){
+      return res.status(400).json({ status: 'Bad Request'});
+    }
     const currentDate = new Date();
 
     const upcomingLectures = await Lecture.find({
@@ -159,7 +174,9 @@ exports.ongoingLecturesStudent = async (req, res) => {
 exports.upcomingLecturesStudent = async (req, res) => {
   try {
     const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
-
+    if(!currentStudent){
+      return res.status(400).json({ status: 'Bad Request'});
+    }
     const currentDate = new Date();
 
     const upcomingLectures = await Lecture.find({
@@ -192,7 +209,9 @@ exports.upcomingLecturesStudent = async (req, res) => {
 exports.historyLecturesStudent = async (req, res) => {
   try {
     const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
-
+    if(!currentStudent){
+      return res.status(400).json({ status: 'Bad Request'});
+    }
     const currentDate = new Date();
 
     const upcomingLectures = await Lecture.find({
@@ -225,7 +244,9 @@ exports.historyLecturesStudent = async (req, res) => {
 exports.historyLecturesTeacher = async (req, res) => {
   try {
     const currentTeacher = await Teacher.findOne({ email: req.teacher.email }).exec();
-
+    if(!currentTeacher){
+      return res.status(400).json({ status: 'Bad Request'});
+    }
     const currentDate = new Date();
 
     const upcomingLectures = await Lecture.find({

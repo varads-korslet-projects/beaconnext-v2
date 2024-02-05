@@ -2,12 +2,13 @@ const Attendance = require('../models/attendance');
 const Lecture = require('../models/lecture');
 const Student = require('../models/student');
 const Beacon = require('../models/beacon');
-const { currentStudent } = require('./student');
 
 exports.getAttendanceReport = async (req, res) => {
     try {
         const { department, year, division } = req.body;
-
+        if(!department || !year || !division){
+            return res.status(400).json({ status: 'Bad Request'});
+        }
         // Retrieve lectures for the specified department, year, and division
         const lectures = await Lecture.find({ department, year, division });
 
@@ -48,7 +49,9 @@ exports.getAttendanceReport = async (req, res) => {
 
 exports.getAttendanceLecture = async(req,res) => {
     const { lectureId } = req.body;
-
+    if(!lectureId){
+        return res.status(400).json({ status: 'Bad Request'});
+    }
     const lecture = await Attendance.findOne({ lecture: lectureId }).populate({
         path: 'students.Id',
         model: 'Student',
@@ -64,7 +67,9 @@ exports.getAttendanceLecture = async(req,res) => {
 
 exports.markPresent = async(req,res) => {
     const { moodleId, lectureId } = req.body;
-
+    if(!moodleId || !lectureId){
+        return res.status(400).json({ status: 'Bad Request'});
+    }
     const currentStudent = await Student.findOne({moodleId:moodleId})
     const attendance = await Attendance.findOne({ lecture:lectureId, "students.Id": currentStudent._id });
 

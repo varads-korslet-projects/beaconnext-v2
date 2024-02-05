@@ -117,7 +117,7 @@ def test_create_lecture():
         "EndTime": "2024-01-23T09:30:00Z",
         "year": 2,
         "division": "B",
-        "class": 101,
+        "roomNo": 101,
         "minimumTime": 60
     }
     response = requests.post(url, headers=headers, json=lecture_data)

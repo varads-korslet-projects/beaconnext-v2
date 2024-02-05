@@ -117,7 +117,7 @@ exports.countAttendance = async (req, res) => {
             division: currentStudent.division,
             StartTime: { $lt: currentDate },
             EndTime: { $gt: currentDate },
-            class: room
+            roomNo: room
           })
         
         if(!lectureDetails){

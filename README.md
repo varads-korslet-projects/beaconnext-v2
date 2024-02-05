@@ -181,7 +181,7 @@ Example:
 - `EndTime` (Date): End time of the lecture.
 - `year` (Number): Year of the lecture.
 - `division` (String): Division of the lecture.
-- `class` (Number): Class of the lecture.
+- `roomNo` (Number): roomNo of the lecture.
 - `minimumTime` (Number): Minimum time required for attendance.
 
 Example:
@@ -193,7 +193,7 @@ Example:
   "Department":"CS",
   "year": 2,
   "division": "B",
-  "class": 101,
+  "roomNo": 101,
   "minimumTime": 60
 }
 ```

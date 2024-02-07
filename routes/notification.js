@@ -5,7 +5,7 @@ const router = express.Router()
 //middlewares
 const {authCheckTeacher, authCheckStudent} = require("../middlewares/auth");
 
-const {createNotification, getNotificationStudent, getNotificationTeacher} = require('../controllers/notification');
+const {createNotification, updateNotification, getNotificationStudent, getNotificationTeacher} = require('../controllers/notification');
 
 
 router.post("/create-notification",authCheckTeacher ,createNotification);

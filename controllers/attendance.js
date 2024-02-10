@@ -55,7 +55,7 @@ exports.getAttendanceLecture = async(req,res) => {
     const lecture = await Attendance.findOne({ lecture: lectureId }).populate({
         path: 'students.Id',
         model: 'Student',
-        select: 'name'
+        select: 'moodleId'
     }).lean();
     const lectureAttendance = lecture.students.map(item => {
         const { Id: { _id: Id, ...IdRest }, _id, ...newItem } = item;

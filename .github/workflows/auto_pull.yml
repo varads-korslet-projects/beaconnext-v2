@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - development
+  pull_request:
+    branches:
+      - development
 
 jobs:
   auto_pull:
@@ -11,3 +14,6 @@ jobs:
 
     - name: Pull changes
       run: git pull
+
+    - name: Restart pm2
+      run: pm2 restart all

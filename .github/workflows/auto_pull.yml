@@ -3,10 +3,10 @@ name: Auto Pull on Commit
 on:
   push:
     branches:
-      - development
+      - deployment
   pull_request:
     branches:
-      - development
+      - deployment
 
 jobs:
   auto_pull:

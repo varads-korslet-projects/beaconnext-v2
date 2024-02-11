@@ -12,6 +12,7 @@ jobs:
   auto_pull:
     runs-on: self-hosted
 
+    steps:
     - name: Pull changes
       run: git pull
 

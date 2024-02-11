@@ -65,7 +65,7 @@ exports.studentLogin = async (req,res)=>{
         if(student.deviceId == deviceId){
             const match = await bcrypt.compare(password, student.hash_password)
             if(match){
-                const token = jwt.sign({ moodleId: student.moodleId, name: student.name, _id: student._id, role: "student" },  process.env.signingkey, { expiresIn: '1d' })
+                const token = jwt.sign({ moodleId: student.moodleId, name: student.name, _id: student._id, role: "student" },  process.env.signingkey, { expiresIn: '100d' })
                 res.status(201).json({success: "Login successful", token});
             }
             else{

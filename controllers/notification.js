@@ -23,6 +23,9 @@ exports.createNotification = async(req, res) => {
             StartTime: { $lt: currentDate },
             EndTime: { $gt: currentDate }
         });
+        if(!lecture){
+            return res.status(400).json({status:"Bad Request"});
+        }
         notif.department = lecture.department;
         notif.year = lecture.year;
         notif.division = lecture.division;

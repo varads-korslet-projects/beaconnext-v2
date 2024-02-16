@@ -8,7 +8,7 @@ const teacherSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
     },
     email: {
         type : String,
@@ -22,7 +22,7 @@ const teacherSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        required: true,
+        required: false,
     },
     role: {
         type:String,

@@ -1,5 +1,6 @@
 const Notification = require("../models/notification")
 const Teacher = require("../models/teacher")
+const Student = require("../models/student")
 const Lecture = require("../models/lecture")
 
 exports.createNotification = async(req, res) => {
@@ -44,8 +45,20 @@ exports.updateNotification = async(req, res) => {
 }
 
 exports.getNotificationStudent = async(req, res) => {
-
-
+    const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
+    try {
+        const notifications = await Notification.find({
+            department: currentStudent.department,
+            year: currentStudent.year,
+            division: currentStudent.division
+        });
+        console.log(currentStudent)
+        return res.status(200).json(notifications);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "Internal Server Error", message: "Error fetching notifications" });
+    }
 }
 
 exports.getNotificationTeacher = async(req, res) => {

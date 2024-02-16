@@ -3,6 +3,7 @@ const Beacon = require('../models/beacon')
 const Lecture = require('../models/lecture')
 const Student = require('../models/student')
 const Teacher = require('../models/teacher')
+const Notification = require("../models/notification")
 
 exports.deleteAllAttendance = async (req, res) => {
     try {
@@ -100,3 +101,24 @@ exports.deleteAllLecture = async (req, res) => {
     }
 };
 
+exports.deleteAllNotifications = async (req, res) => {
+    try {
+        const passkey = req.headers['passkey'];
+        if(!passkey){
+            return res.status(400).json({ status: 'Bad Request'});
+        }
+        if (passkey === process.env.passkeyAdmin) {
+            const deletedNotifications = await Notification.deleteMany({});
+
+            res.status(200).json({
+                deletedNotifications
+            });
+
+        } else {
+            res.status(500).json({ error: "Wrong passkey" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};

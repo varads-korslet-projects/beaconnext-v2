@@ -28,7 +28,7 @@ exports.firstLogin = async (req,res)=>{
             res.status(404).json({error: "Moodle ID does not exist!"});
             return;
         }
-        if(student.deviceId=="NULL"){
+        if(!student.deviceId){
             if(student.hash_password == oldPassword ){
                 hashed_password = bcrypt.hashSync(newPassword, 10);
                 await Student.findOneAndUpdate({moodleId:moodleId}, {hash_password:hashed_password, deviceId: deviceId})

@@ -2,7 +2,7 @@
 
 ## Base URL
 ```
-http://170.64.198.55:8000/api
+http://localhost:8000/api
 ```
 `GET /test`
 To test if server is reachable

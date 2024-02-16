@@ -8,7 +8,7 @@ exports.mapBeacon = async(req,res) => {
         }
         if(passkey == process.env.passkeyStudent){
             const beacon = req.body;
-            const result = await Beacon.create(beacon);
+            const result = await Beacon.insertMany(beacon);
             res.status(201).json(result);
         }else{
             res.status(500).json({ error: "Wrong passkey" });

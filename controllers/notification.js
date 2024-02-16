@@ -52,7 +52,6 @@ exports.getNotificationStudent = async(req, res) => {
             year: currentStudent.year,
             division: currentStudent.division
         });
-        console.log(currentStudent)
         return res.status(200).json(notifications);
     }
     catch (error) {
@@ -67,7 +66,6 @@ exports.getNotificationTeacher = async(req, res) => {
         const notifications = await Notification.find({
             teacher: currentTeacher._id // Use currentTeacher._id instead of currentTeacher.Id
         });
-        console.log(notifications)
         return res.status(200).json(notifications);
     }
     catch (error) {

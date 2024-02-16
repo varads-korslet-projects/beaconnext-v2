@@ -8,20 +8,21 @@ exports.createNotification = async(req, res) => {
     if (!notif || !currentTeacher) {
         return res.status(400).json({status:"Bad Request"});
     }
-    if (!notif.title || !notif.description || !notif.EndTime) {
+    if (!notif.title || !notif.description) {
         return res.status(400).json({status:"Bad Request"});
     }
-    if (!notif.department && res.body.roomNo){
+    if (!notif.department && notif.roomNo){
         //Find which lecture is going on in given room and populate fields
         const lecture = await Lecture.findOne({
             teacher: currentTeacher._id,
-            roomNo:res.body.roomNo,
+            roomNo:notif.roomNo,
             StartTime: { $lt: currentDate },
             EndTime: { $gt: currentDate }
         });
         notif.department = lecture.department;
         notif.year = lecture.year;
         notif.division = lecture.division;
+        notif.EndTime = lecture.EndTime
     }
     notif.teacher = currentTeacher._id;
     const result = await Notification.create(notif);

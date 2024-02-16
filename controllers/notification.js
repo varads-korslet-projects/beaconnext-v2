@@ -12,6 +12,7 @@ exports.createNotification = async(req, res) => {
         return res.status(400).json({status:"Bad Request"});
     }
     if (!notif.department && notif.roomNo){
+        const currentDate = new Date();
         //Find which lecture is going on in given room and populate fields
         const lecture = await Lecture.findOne({
             teacher: currentTeacher._id,

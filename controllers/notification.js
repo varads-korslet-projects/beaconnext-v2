@@ -49,6 +49,16 @@ exports.getNotificationStudent = async(req, res) => {
 }
 
 exports.getNotificationTeacher = async(req, res) => {
-
-
+    const currentTeacher = req.teacher;
+    try {
+        const notifications = await Notification.find({
+            teacher: currentTeacher._id // Use currentTeacher._id instead of currentTeacher.Id
+        });
+        console.log(notifications)
+        return res.status(200).json(notifications);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ status: "Internal Server Error", message: "Error fetching notifications" });
+    }
 }

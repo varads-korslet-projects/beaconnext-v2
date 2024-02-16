@@ -29,7 +29,9 @@ exports.createNotification = async(req, res) => {
         notif.department = lecture.department;
         notif.year = lecture.year;
         notif.division = lecture.division;
-        notif.EndTime = lecture.EndTime
+        if(!notif.EndTime){
+            notif.EndTime = lecture.EndTime;
+        }
     }
     notif.teacher = currentTeacher._id;
     const result = await Notification.create(notif);

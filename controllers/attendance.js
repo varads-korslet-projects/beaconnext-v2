@@ -52,7 +52,7 @@ exports.getAttendanceReport = async (req, res) => {
             for (const studentName in attendanceReport) {
                 for (const subjectName in attendanceReport[studentName]) {
                     if(attendanceReport[studentName][subjectName]>0){
-                        attendanceReport[studentName][subjectName] /= lectureCount;
+                        attendanceReport[studentName][subjectName] = Math.round((attendanceReport[studentName][subjectName]/lectureCount)*100);
                     }
                 }
             }        

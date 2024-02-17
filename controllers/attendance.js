@@ -16,10 +16,17 @@ exports.getAttendanceReport = async (req, res) => {
         // Retrieve lectures and subjects for the specified department, year, and division
         const lectures = await Lecture.find({ department, year, division });
         const subjects = await Subject.find({ department, year, division });
-
+        const students = await Student.find({ department, year, division });
         // Initialize an object to store attendance report
         const attendanceReport = {};
-
+        for (const student of students) {
+            attendanceReport[student.name] = {};
+        
+            // Iterate through each subject
+            for (const subject of subjects) {
+                attendanceReport[student.name][subject.subjectName] = 0;
+            }
+        }
         // Iterate through each subject
         for (const subject of subjects) {
             let lectureCount = 0;
@@ -35,13 +42,6 @@ exports.getAttendanceReport = async (req, res) => {
                     for (const studentAttendance of attendanceRecord.students) {
                         // Retrieve student details
                         const studentDetails = await Student.findById(studentAttendance.Id);
-                        // Initialize the student in the report if not already present
-                        if (!attendanceReport[studentDetails.name]) {
-                            attendanceReport[studentDetails.name] = {};
-                        }
-                        if(!attendanceReport[studentDetails.name][subject.subjectName]){
-                            attendanceReport[studentDetails.name][subject.subjectName] = 0;
-                        }
                         if(studentAttendance.Present){
                             const attendancePercentage = attendanceReport[studentDetails.name][subject.subjectName]+1;
                             attendanceReport[studentDetails.name][subject.subjectName] = attendancePercentage;
@@ -51,7 +51,9 @@ exports.getAttendanceReport = async (req, res) => {
             }
             for (const studentName in attendanceReport) {
                 for (const subjectName in attendanceReport[studentName]) {
-                    attendanceReport[studentName][subjectName] /= lectureCount;
+                    if(attendanceReport[studentName][subjectName]>0){
+                        attendanceReport[studentName][subjectName] /= lectureCount;
+                    }
                 }
             }        
         }

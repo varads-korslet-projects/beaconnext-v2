@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 const Lecture = require('../models/lecture')
 const Teacher = require('../models/teacher')
 const Student = require('../models/student')
+const Subject = require('../models/subject')
 
 exports.createLecture = async (req, res) => {
   try {
@@ -17,21 +18,34 @@ exports.createLecture = async (req, res) => {
     }
     // Extract teacher ID from the authenticated request
     const teacherId = req.teacher._id;
-
-    const lecture = {
-      subjectName,
-      teacher: teacherId,
-      StartTime,
-      EndTime,
-      department,
-      year,
-      division,
-      roomNo,
-      minimumTime
-    };
-
-    const result = await Lecture.create(lecture);
-    res.status(201).json(result);
+    var subject = await Subject.findOne({
+      subjectName: req.body.subjectName
+    })
+    if(!subject){
+      subject = {
+        subjectName,
+        department,
+        year,
+        division,
+      }
+      const subjectEntry = await Subject.create(subject);
+    }
+    if(subject || subjectEntry){
+      const lecture = {
+        subjectName,
+        teacher: teacherId,
+        StartTime,
+        EndTime,
+        department,
+        year,
+        division,
+        roomNo,
+        minimumTime
+      };
+      
+      const result = await Lecture.create(lecture);
+      res.status(201).json(result);
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error });

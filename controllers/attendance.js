@@ -2,42 +2,59 @@ const Attendance = require('../models/attendance');
 const Lecture = require('../models/lecture');
 const Student = require('../models/student');
 const Beacon = require('../models/beacon');
+const Subject = require('../models/subject')
 
 exports.getAttendanceReport = async (req, res) => {
     try {
         const { department, year, division } = req.body;
-        if(!department || !year || !division){
-            return res.status(400).json({ status: 'Bad Request'});
-        }
-        // Retrieve lectures for the specified department, year, and division
-        const lectures = await Lecture.find({ department, year, division });
 
+        // Check for required parameters
+        if (!department || !year || !division) {
+            return res.status(400).json({ status: 'Bad Request' });
+        }
+
+        // Retrieve lectures and subjects for the specified department, year, and division
+        const lectures = await Lecture.find({ department, year, division });
+        const subjects = await Subject.find({ department, year, division });
+        const students = await Student.find({ department, year, division });
         // Initialize an object to store attendance report
         const attendanceReport = {};
+        for (const student of students) {
+            attendanceReport[student.name] = {};
+        
+            // Iterate through each subject
+            for (const subject of subjects) {
+                attendanceReport[student.name][subject.subjectName] = 0;
+            }
+        }
+        // Iterate through each subject
+        for (const subject of subjects) {
+            let lectureCount = 0;
+            // Iterate through each lecture for the current subject
+            for (const lecture of lectures.filter(l => l.subjectName === subject.subjectName)) {
+                lectureCount++;
+                // Retrieve attendance record for the current lecture
+                const attendanceRecord = await Attendance.findOne({ lecture: lecture._id });
 
-        // Iterate through each lecture
-        for (const lecture of lectures) {
-            // Retrieve attendance record for the current lecture
-            const attendanceRecord = await Attendance.findOne({ lecture: lecture._id });
-
-            if (attendanceRecord) {
-                // Iterate through each student in the attendance record
-                for (const studentAttendance of attendanceRecord.students) {
-                    // Retrieve student details
-                    const studentDetails = await Student.findById(studentAttendance.Id);
-
-                    // Calculate the percentage of attendance
-                    const attendancePercentage = studentAttendance.Count;
-
-                    // Initialize the student in the report if not already present
-                    if (!attendanceReport[studentDetails.name]) {
-                        attendanceReport[studentDetails.name] = {};
+                if (attendanceRecord) {
+                    // Iterate through each student in the attendance record
+                    for (const studentAttendance of attendanceRecord.students) {
+                        // Retrieve student details
+                        const studentDetails = await Student.findById(studentAttendance.Id);
+                        if(studentAttendance.Present){
+                            const attendancePercentage = attendanceReport[studentDetails.name][subject.subjectName]+1;
+                            attendanceReport[studentDetails.name][subject.subjectName] = attendancePercentage;
+                        }
                     }
-
-                    // Add the attendance percentage for the current subject
-                    attendanceReport[studentDetails.name][lecture.subjectName] = attendancePercentage;
                 }
             }
+            for (const studentName in attendanceReport) {
+                for (const subjectName in attendanceReport[studentName]) {
+                    if(attendanceReport[studentName][subjectName]>0){
+                        attendanceReport[studentName][subjectName] = Math.round((attendanceReport[studentName][subjectName]/lectureCount)*100);
+                    }
+                }
+            }        
         }
 
         res.status(200).json({ attendanceReport });
@@ -45,7 +62,7 @@ exports.getAttendanceReport = async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-};
+}
 
 exports.getAttendanceLecture = async(req,res) => {
     const { lectureId } = req.body;

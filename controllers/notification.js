@@ -46,11 +46,13 @@ exports.updateNotification = async(req, res) => {
 
 exports.getNotificationStudent = async(req, res) => {
     const currentStudent = await Student.findOne({ moodleId: req.student.moodleId }).exec();
+    const currentDate = new Date();
     try {
         const notifications = await Notification.find({
             department: currentStudent.department,
             year: currentStudent.year,
-            division: currentStudent.division
+            division: currentStudent.division,
+            EndTime: {$lt: currentDate}
         });
         return res.status(200).json(notifications);
     }

@@ -32,16 +32,15 @@ exports.getAttendanceReport = async (req, res) => {
                     for (const studentAttendance of attendanceRecord.students) {
                         // Retrieve student details
                         const studentDetails = await Student.findById(studentAttendance.Id);
-
-                        // Calculate the percentage of attendance
-                        const attendancePercentage = studentAttendance.Count;
-
                         // Initialize the student in the report if not already present
                         if (!attendanceReport[studentDetails.name]) {
                             attendanceReport[studentDetails.name] = {};
                         }
-
-                        // Add the attendance percentage for the current subject
+                        if(!attendanceReport[studentDetails.name][subject.subjectName]){
+                            attendanceReport[studentDetails.name][subject.subjectName] = 0;
+                        }
+                        // Calculate the percentage of attendance
+                        const attendancePercentage = attendanceReport[studentDetails.name][subject.subjectName]+studentAttendance.Count;
                         attendanceReport[studentDetails.name][subject.subjectName] = attendancePercentage;
                     }
                 }

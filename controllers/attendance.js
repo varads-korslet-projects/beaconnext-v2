@@ -49,6 +49,11 @@ exports.getAttendanceReport = async (req, res) => {
                     }
                 }
             }
+            for (const studentName in attendanceReport) {
+                for (const subjectName in attendanceReport[studentName]) {
+                    attendanceReport[studentName][subjectName] /= lectureCount;
+                }
+            }        
         }
 
         res.status(200).json({ attendanceReport });

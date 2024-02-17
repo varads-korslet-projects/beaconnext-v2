@@ -33,7 +33,6 @@ exports.getAttendanceReport = async (req, res) => {
             // Iterate through each lecture for the current subject
             for (const lecture of lectures.filter(l => l.subjectName === subject.subjectName)) {
                 lectureCount++;
-                console.log(lectureCount)
                 // Retrieve attendance record for the current lecture
                 const attendanceRecord = await Attendance.findOne({ lecture: lecture._id });
 

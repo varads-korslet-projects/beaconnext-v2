@@ -23,7 +23,10 @@ exports.getAttendanceReport = async (req, res) => {
         // Iterate through each subject
         for (const subject of subjects) {
             // Iterate through each lecture for the current subject
-            for (const lecture of lectures.filter(l => l.subjectName === subject.subjectName)) {
+            const filteredLectures = lectures.filter(l => l.subjectName === subject.subjectName);
+            for (const lecture of filteredLectures) {
+                const length = filteredLectures.length;
+                console.log(length)
                 // Retrieve attendance record for the current lecture
                 const attendanceRecord = await Attendance.findOne({ lecture: lecture._id });
 
@@ -39,9 +42,10 @@ exports.getAttendanceReport = async (req, res) => {
                         if(!attendanceReport[studentDetails.name][subject.subjectName]){
                             attendanceReport[studentDetails.name][subject.subjectName] = 0;
                         }
-                        // Calculate the percentage of attendance
-                        const attendancePercentage = attendanceReport[studentDetails.name][subject.subjectName]+studentAttendance.Count;
-                        attendanceReport[studentDetails.name][subject.subjectName] = attendancePercentage;
+                        if(studentAttendance.Present){
+                            const attendancePercentage = attendanceReport[studentDetails.name][subject.subjectName]+1;
+                            attendanceReport[studentDetails.name][subject.subjectName] = attendancePercentage;
+                        }
                     }
                 }
             }

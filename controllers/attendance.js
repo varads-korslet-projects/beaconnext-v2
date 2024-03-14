@@ -74,12 +74,16 @@ exports.getAttendanceLecture = async(req,res) => {
         model: 'Student',
         select: 'moodleId'
     }).lean();
-    const lectureAttendance = lecture.students.map(item => {
-        const { Id: { _id: Id, ...IdRest }, _id, ...newItem } = item;
-        return { Id: IdRest, ...newItem  };
-    });
-    
-    return res.status(200).json(lectureAttendance);
+    if(lecture){
+        const lectureAttendance = lecture.students.map(item => {
+            const { Id: { _id: Id, ...IdRest }, _id, ...newItem } = item;
+            return { Id: IdRest, ...newItem  };
+        });
+        return res.status(200).json(lectureAttendance);
+    }
+    else {
+        return res.status(404).json({ error: "No attendance!" })
+    }
 }
 
 exports.markPresent = async(req,res) => {

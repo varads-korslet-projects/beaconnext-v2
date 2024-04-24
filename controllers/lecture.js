@@ -9,10 +9,11 @@ const Subject = require('../models/subject')
 exports.createLecture = async (req, res) => {
   try {
     const { subjectName, StartTime, EndTime, department, year, division, roomNo, minimumTime } = req.body;
+    const currentDate = new Date();
     if(!subjectName || !StartTime || !EndTime || !department || !year || !division || !roomNo || !minimumTime ){
       return res.status(400).json({ status: 'Bad Request'});
     }
-
+    
     if(StartTime>EndTime) {
       console.log("Works")
     }
@@ -42,13 +43,24 @@ exports.createLecture = async (req, res) => {
         roomNo,
         minimumTime
       };
-      
-      const result = await Lecture.create(lecture);
-      res.status(201).json(result);
+      const upcomingLectures = await Lecture.find({
+        department,
+        year,
+        division,
+        StartTime: { $lt: currentDate },
+        EndTime: { $gt: currentDate }
+      }).sort({ StartTime: 1 }).lean();
+      if (upcomingLectures.length>0){
+        return res.status(500).json({ status: 'Lecture for this division already exists at this time!'});
+      }
+      else {
+        const result = await Lecture.create(lecture);
+        return res.status(201).json(result);
+      }
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error });
+    return res.status(500).json({ error: error });
   }
 }
 
